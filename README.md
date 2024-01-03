@@ -18,6 +18,6 @@ Setup app
 6. Create a file ".env" and enter following key value pairs  
       FLASK_APP=app
       OPENAI_API_KEY=<Your OPENAI API key>
-7. Run the app with command "flask run"  
+7. Run the app with command "flask run"   
 
 
