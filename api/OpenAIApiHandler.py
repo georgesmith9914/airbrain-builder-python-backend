@@ -1,5 +1,6 @@
 import os
 import openai
+import json
 from flask_restful import Api, Resource, reqparse
 
 
@@ -26,17 +27,58 @@ chat_prompt = ChatPromptTemplate.from_messages(
     [system_message_prompt, human_message_prompt]
 )
 
-
 class OpenAIApiHandler(Resource):
+  agent_details = [
+      {
+        "agent_uuid": "1",
+        "agent_telegram_bot_id": "6537537141",
+        "agent_persona": "Expert on Bored Ape Yacht Club"
+      },
+      {
+        "agent_uuid": "2",
+        "agent_persona": "Expert on Stock market"
+      }
+    ]
   # def get(self, place):
   def post(self):
     print("got request in OpenAIApiHandler")
     parser = reqparse.RequestParser()
+    parser.add_argument('agent_uuid', type=str)
     parser.add_argument('question', type=str)
-
+    parser.add_argument('agent_details', type=str)
+    parser.add_argument('agent_telegram_bot_id', type=str)
     args = parser.parse_args()
 
     print(args)
+
+    if(args.question):
+       print("Invoke LLM")
+       print(args.question)  
+       agent_details = None
+
+       if(args.agent_telegram_bot_id):
+          agent_details = OpenAIApiHandler.getAgentDetailsforTelegramBot(args.agent_telegram_bot_id)
+          print(agent_details)
+       else:
+          agent_details = OpenAIApiHandler.getAgentDetails(args.agent_uuid) 
+
+       output = llm(
+        chat_prompt.format_prompt(
+            persona="You are " + agent_details["agent_persona"], text=args.question + "  . Try to limit answer in 1-2 sentences."
+          ).to_messages()
+        )
+
+       print(output)
+
+       return {
+          'resultStatus': 'SUCCESS',
+          #'message': llm(question).split("\n\n")
+          'message': output.content
+          }
+    else:
+       print("set agent details")
+       print(args.agent_details)  
+       
     # higher temperature leads to more variation, randomness and creativity
     # temperature between 0.7 and 0.9 is most commonly used if you want to experiment and create many variations quickly
     # llm = OpenAI(temperature=0.9)
@@ -48,18 +90,20 @@ class OpenAIApiHandler(Resource):
     # question = prompt.format(place=place)
     # split() is used to split the items into a list. The llm response will look like:
     # "\n\n1. <first item>.\n\n2. <second item>..."
-    output = llm(
-    chat_prompt.format_prompt(
-        persona="You are a game expert.", text=args.question + "  . Try to limit answer in 1-2 sentences."
-      ).to_messages()
-    )
-
-    print(output)
-
-    return {
-      'resultStatus': 'SUCCESS',
-      #'message': llm(question).split("\n\n")
-      'message': output.content
-      }
 
   
+  def getAgentDetails(agent_uuid):
+    for item in OpenAIApiHandler.agent_details:
+        if item["agent_uuid"] == agent_uuid:
+           return item
+
+  def getAgentDetailsforTelegramBot(agent_telegram_bot_id):
+    for item in OpenAIApiHandler.agent_details:
+        if item["agent_telegram_bot_id"] == agent_telegram_bot_id:
+           return item
+
+  def setAgentDetails(agent_uuid):
+
+    for item in OpenAIApiHandler.agent_details:
+        if item["agent_uuid"] == agent_uuid:
+           return item["agent_persona"]
