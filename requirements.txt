@@ -8,3 +8,4 @@ flask_cors==3.0.10
 pyodata==1.10.1
 pydantic==1.10.9
 Werkzeug==2.2.2
+pysondb==1.6.7

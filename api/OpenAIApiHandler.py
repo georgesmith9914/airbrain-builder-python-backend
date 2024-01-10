@@ -2,8 +2,7 @@ import os
 import openai
 import json
 from flask_restful import Api, Resource, reqparse
-
-
+from pysondb import getDb
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts.chat import (
     ChatPromptTemplate,
@@ -13,6 +12,9 @@ from langchain.prompts.chat import (
 from langchain.schema import HumanMessage, SystemMessage
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
+
+airbrain_db = getDb('airbrain.json')
+
 
 llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
 
@@ -28,28 +30,19 @@ chat_prompt = ChatPromptTemplate.from_messages(
 )
 
 class OpenAIApiHandler(Resource):
-  agent_details = [
-      {
-        "agent_uuid": "1",
-        "agent_telegram_bot_id": "6537537141",
-        "agent_persona": "Expert on Bored Ape Yacht Club"
-      },
-      {
-        "agent_uuid": "2",
-        "agent_persona": "Expert on Stock market"
-      }
-    ]
+
   # def get(self, place):
   def post(self):
     print("got request in OpenAIApiHandler")
     parser = reqparse.RequestParser()
     parser.add_argument('agent_uuid', type=str)
+    parser.add_argument('agent_flow', type=str)
     parser.add_argument('question', type=str)
-    parser.add_argument('agent_details', type=str)
+    #parser.add_argument('agent_details', type=str)
     parser.add_argument('agent_telegram_bot_id', type=str)
     args = parser.parse_args()
 
-    print(args)
+    print(args.agent_uuid)
 
     if(args.question):
        print("Invoke LLM")
@@ -60,7 +53,8 @@ class OpenAIApiHandler(Resource):
           agent_details = OpenAIApiHandler.getAgentDetailsforTelegramBot(args.agent_telegram_bot_id)
           print(agent_details)
        else:
-          agent_details = OpenAIApiHandler.getAgentDetails(args.agent_uuid) 
+          #agent_details = OpenAIApiHandler.getAgentDetails(args.agent_uuid) 
+          print("In local else")
 
        output = llm(
         chat_prompt.format_prompt(
@@ -77,8 +71,11 @@ class OpenAIApiHandler(Resource):
           }
     else:
        print("set agent details")
-       print(args.agent_details)  
-       
+       agent_details = {
+          "agent_uuid": args.agent_uuid,
+          "agent_flow": args.agent_flow
+       }
+       OpenAIApiHandler.setAgentDetails(agent_details)
     # higher temperature leads to more variation, randomness and creativity
     # temperature between 0.7 and 0.9 is most commonly used if you want to experiment and create many variations quickly
     # llm = OpenAI(temperature=0.9)
@@ -102,8 +99,20 @@ class OpenAIApiHandler(Resource):
         if item["agent_telegram_bot_id"] == agent_telegram_bot_id:
            return item
 
-  def setAgentDetails(agent_uuid):
+  def setAgentDetails(agent_details):
+    print("Entered in setAgentDetails")
+    print(agent_details["agent_uuid"])
+    #add or update
+    q = {"agent_uuid": agent_details["agent_uuid"]}
+    data = airbrain_db.getByQuery(query=q)
+    print(data)
 
-    for item in OpenAIApiHandler.agent_details:
-        if item["agent_uuid"] == agent_uuid:
-           return item["agent_persona"]
+    if(data):
+       print("record exists")
+       query_data = q
+       updated_data = agent_details
+       airbrain_db.updateByQuery(db_dataset=query_data, new_dataset=updated_data)
+    else:
+       print("record does not exist")
+       item_id = airbrain_db.add(agent_details)
+       print(item_id)
