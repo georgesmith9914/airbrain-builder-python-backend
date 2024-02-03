@@ -1,9 +1,7 @@
-
-https://www.geeksforgeeks.org/python-build-a-rest-api-using-flask/  
+AirBrain AI Python backend setup guide.  
 
 Install git  
       Based on your OS, install git  
-
 
 Setup app  
 1. Install Python 3.10.11  
@@ -18,6 +16,8 @@ Setup app
 6. Create a file ".env" and enter following key value pairs  
       FLASK_APP=app
       OPENAI_API_KEY=<Your OPENAI API key>
-7. Run the app with command "flask run"   
+7. Run the app with command "flask run"
+
+
 
 
