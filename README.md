@@ -1,4 +1,20 @@
-AirBrain AI Python backend setup guide.  
+**AirBrain AI**
+Built on Solana using SolanaFM and Phantom Wallet, AirBrain AI is building Composable generative AI Agents Protocol (CAAP) which allows users to build personalized AI agents within minutes on-chain for use cases such as crypto alpha research, NFT research, learn about crypto and DeFi, generate ideas, create marketing content  etc.
+
+**About AirBrain AI**
+We are transforming how individuals perform crypto tasks with the Composable Generative AI Agents Protocol (CAAP). This revolutionary platform enables users to construct custom AI agents in a matter of minutes. From crypto and NFT research to generating unique marketing content, CAAP realizes the potential of generative AI in simplifying numerous use-cases within the evolving crypto AI landscape.  
+
+**Web**
+https://www.airbrain.co/  
+
+**Video and demo**
+https://player.hourone.ai/c018610d64c64928877bf8337f456aec  
+
+**Pitch deck**
+https://drive.google.com/file/d/1YbRBvd7SBfZAEtNe2e34esuVDdBRBVUP/view?usp=drive_link  
+
+
+**AirBrain AI Python backend setup guide.**  
 
 Install git  
       Based on your OS, install git  
