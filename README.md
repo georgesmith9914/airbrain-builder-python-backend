@@ -1,5 +1,5 @@
 **AirBrain AI**
-Built on Alephium blockchain, AirBrain AI is building Composable generative AI Agents Protocol (CAAP) which allows users to build personalized AI agents within minutes on-chain for use cases such as crypto alpha research, NFT research, learn about crypto and DeFi, generate ideas, create marketing content  etc.
+Built on Alephium blockchain using Ralph language and Paython based backend, AirBrain AI is building Composable generative AI Agents Protocol (CAAP) which allows users to build personalized AI agents within minutes on-chain for use cases such as crypto alpha research, NFT research, learn about crypto and DeFi, generate ideas, create marketing content  etc.
 
 **About AirBrain AI**
 We are transforming how individuals perform crypto tasks with the Composable Generative AI Agents Protocol (CAAP). This revolutionary platform enables users to construct custom AI agents in a matter of minutes. From crypto and NFT research to generating unique marketing content, CAAP realizes the potential of generative AI in simplifying numerous use-cases within the evolving crypto AI landscape.  
