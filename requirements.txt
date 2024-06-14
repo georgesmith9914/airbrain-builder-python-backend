@@ -1,8 +1,8 @@
-Flask==2.2.3
-gunicorn==20.1.0
-langchain==0.1.0 
+Flask==2.2.5
+gunicorn==22.0.0
+langchain==0.2.3 
 wikipedia==1.4.0 
-langchain-community==0.0.10 
+langchain-community==0.2.5 
 langchainhub==0.1.14 
 langchain-openai==0.0.2 
 openai==1.7.0 
@@ -11,8 +11,8 @@ langsmith==0.0.86
 flask_restful==0.3.10
 flask_cors==3.0.10
 pyodata==1.10.1
-pydantic==1.10.9
-Werkzeug==2.2.2
+pydantic==1.10.13
+Werkzeug==3.0.3
 pysondb==1.6.7
 pandas==2.2.0
 pretty_html_table==0.9.16
